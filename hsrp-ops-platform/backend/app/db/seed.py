@@ -40,6 +40,15 @@ STAGES = [
     "dc_pending", "dispatch_pending", "fitment_pending", "completed",
 ]
 
+# Match SLA hours used by pendency_monitor (realistic demo delays)
+_STAGE_SLA_HOURS = {
+    "issuance_pending": settings.SLA_ISSUANCE_HOURS,
+    "embossing_pending": settings.SLA_EMBOSSING_HOURS,
+    "dc_pending": settings.SLA_DC_HOURS,
+    "dispatch_pending": settings.SLA_DISPATCH_HOURS,
+    "fitment_pending": settings.SLA_FITMENT_HOURS,
+}
+
 PLATE_SIZES = ["Standard", "Compact", "Commercial"]
 PLATE_COLORS = ["White", "Yellow", "Green", "Blue"]
 
@@ -49,6 +58,23 @@ def _random_date(days_back: int = 120) -> datetime:
         days=random.randint(0, days_back),
         hours=random.randint(0, 23),
     )
+
+
+def _realistic_stage_entered(stage: str) -> datetime:
+    """Pending orders use recent timestamps so demo delay rate looks realistic (~15–25%)."""
+    now = datetime.utcnow()
+    if stage == "received":
+        return now - timedelta(hours=random.uniform(2, 20))
+    if stage == "completed":
+        return now - timedelta(days=random.randint(3, 30))
+
+    sla = _STAGE_SLA_HOURS.get(stage, 48)
+    # ~75% within SLA, ~25% modestly overdue (not 90-day-old stuck orders)
+    if random.random() < 0.75:
+        hours_ago = random.uniform(2, sla * 0.75)
+    else:
+        hours_ago = random.uniform(sla * 1.1, sla * 2.2)
+    return now - timedelta(hours=hours_ago)
 
 
 def seed() -> None:
@@ -126,7 +152,7 @@ def seed() -> None:
                 weights=[5, 15, 20, 10, 15, 15, 20],
             )[0]
             order_date = _random_date(90)
-            stage_entered = order_date + timedelta(hours=random.randint(1, 200))
+            stage_entered = _realistic_stage_entered(stage)
             vehicle_type = random.choice(["new", "new", "new", "old"])
             order = Order(
                 order_number=f"HSRP-{state.code}-{10000 + i}",
@@ -139,7 +165,7 @@ def seed() -> None:
                 revenue=round(random.uniform(800, 3500), 2),
                 current_stage=stage,
                 order_date=order_date,
-                stage_entered_at=stage_entered if stage != "completed" else order_date,
+                stage_entered_at=stage_entered,
                 completed_at=order_date + timedelta(days=random.randint(3, 14)) if stage == "completed" else None,
             )
             orders.append(order)
@@ -184,6 +210,12 @@ def seed() -> None:
 
         db.commit()
         print(f"Seeded: {len(states)} states, {len(oems)} OEMs, {len(orders)} orders, {len(inventory_items)} inventory SKUs")
+
+        from app.services.auth_service import bootstrap_admin
+
+        admin = bootstrap_admin(db)
+        if admin:
+            print(f"Bootstrap admin created: {admin.email} (password from BOOTSTRAP_ADMIN_PASSWORD in .env)")
 
         # Generate AI alerts
         from app.services.ai_alerts import generate_alerts

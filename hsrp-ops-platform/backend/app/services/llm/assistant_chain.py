@@ -1,6 +1,6 @@
 """HSRP AI Assistant — Azure OpenAI + LangChain agent with live analytics tools."""
 
-from langchain_core.messages import AIMessage, HumanMessage, SystemMessage
+from langchain_core.messages import AIMessage, HumanMessage, SystemMessage, ToolMessage
 from langgraph.prebuilt import create_react_agent
 
 from app.core.config import settings
@@ -62,10 +62,19 @@ def ask_with_langchain(db, question: str, vehicle_type: str | None = None) -> di
                 answer = msg.content if isinstance(msg.content, str) else str(msg.content)
                 break
 
-        tool_names = list({t.name for t in tools})
+        used_tools: list[str] = []
+        for msg in messages:
+            if isinstance(msg, AIMessage) and getattr(msg, "tool_calls", None):
+                for tc in msg.tool_calls:
+                    name = tc.get("name") if isinstance(tc, dict) else getattr(tc, "name", None)
+                    if name and name not in used_tools:
+                        used_tools.append(name)
+            if isinstance(msg, ToolMessage) and msg.name and msg.name not in used_tools:
+                used_tools.append(msg.name)
+
         return {
             "answer": answer or "I could not generate an answer. Please try rephrasing.",
-            "sources": tool_names,
+            "sources": used_tools,
             "llm_used": True,
             "model": settings.azure_deployment,
         }
