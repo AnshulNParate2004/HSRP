@@ -1,0 +1,49 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: hsrp
+      POSTGRES_PASSWORD: hsrp_secure_change_me
+      POSTGRES_DB: hsrp_ops
+    volumes:
+      - hsrp_pg_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U hsrp -d hsrp_ops"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      ENVIRONMENT: production
+      DEBUG: "false"
+      AUTO_SEED_DEMO: "false"
+      DATABASE_URL: postgresql+psycopg2://hsrp:hsrp_secure_change_me@postgres:5432/hsrp_ops
+      SECRET_KEY: ${SECRET_KEY:-replace-with-openssl-rand-hex-32}
+      CORS_ORIGINS: http://localhost:8080,http://localhost:8000
+      SCHEDULER_ENABLED: "true"
+      AZURE_OPENAI_API_KEY: ${AZURE_OPENAI_API_KEY:-}
+      AZURE_OPENAI_ENDPOINT: ${AZURE_OPENAI_ENDPOINT:-}
+      AZURE_OPENAI_CHAT_DEPLOYMENT: ${AZURE_OPENAI_CHAT_DEPLOYMENT:-gpt-4o}
+      BOOTSTRAP_ADMIN_EMAIL: ${BOOTSTRAP_ADMIN_EMAIL:-admin@realindustries.in}
+      BOOTSTRAP_ADMIN_PASSWORD: ${BOOTSTRAP_ADMIN_PASSWORD:-ChangeMe@2026!}
+      DISHA_API_URL: ${DISHA_API_URL:-}
+      DISHA_API_KEY: ${DISHA_API_KEY:-}
+      HERO_BIZ_API_URL: ${HERO_BIZ_API_URL:-}
+      HERO_BIZ_API_KEY: ${HERO_BIZ_API_KEY:-}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./backend/app/.env:/app/app/.env:ro
+    restart: unless-stopped
+
+volumes:
+  hsrp_pg_data:
