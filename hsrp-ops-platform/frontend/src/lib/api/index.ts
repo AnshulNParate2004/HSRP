@@ -1,4 +1,4 @@
-import { buildQuery, fetchApi, vehicleQuery } from "./client";
+import { buildQuery, fetchApi, getApiBase, vehicleQuery } from "./client";
 import type {
   Alert,
   BreakdownItem,
@@ -207,8 +207,8 @@ export const reportsApi = {
       priority_alerts: Array<{ title: string; severity: string; message: string }>;
       recommendations: string[];
     }>("/reports/summary"),
-  exportUrl: (type: string) => `/api/v1/reports/export/${type}`,
-  exportPptUrl: () => `/api/v1/reports/export/executive-ppt`,
+  exportUrl: (type: string) => `${getApiBase()}/reports/export/${type}`,
+  exportPptUrl: () => `${getApiBase()}/reports/export/executive-ppt`,
 };
 
 export const integrationsApi = {

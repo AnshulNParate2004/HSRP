@@ -78,3 +78,59 @@ All analytics under `/api/v1/`:
 SQLite file: `backend/hsrp_ops.db`
 
 Auto-seeds demo data on first startup if the database is empty.
+
+## Deploy to Hugging Face (Docker Space)
+
+Use this backend with the Vercel frontend (`VITE_API_URL` → your HF Space URL).
+
+### 1. Create a Docker Space
+
+1. [huggingface.co/spaces](https://huggingface.co/spaces) → **Create new Space**
+2. SDK: **Docker**
+3. Name e.g. `hsrp-api` → URL: `https://Anshul2004-hsrp-api.hf.space`
+
+### 2. Push this folder to the Space
+
+Clone the Space repo, copy these files into its root, then push:
+
+```
+app/
+requirements.txt
+Dockerfile
+README.HF.md  → rename to README.md on the Space repo
+```
+
+```bash
+git clone https://huggingface.co/spaces/Anshul2004/hsrp-api
+cd hsrp-api
+
+# From your machine (PowerShell example)
+Copy-Item -Recurse ..\HSRP\hsrp-ops-platform\backend\app .
+Copy-Item ..\HSRP\hsrp-ops-platform\backend\requirements.txt .
+Copy-Item ..\HSRP\hsrp-ops-platform\backend\Dockerfile .
+Copy-Item ..\HSRP\hsrp-ops-platform\backend\README.HF.md README.md
+
+git add .
+git commit -m "Deploy HSRP FastAPI backend"
+git push
+```
+
+### 3. Space secrets (Settings → Variables and secrets)
+
+| Variable | Value |
+|----------|--------|
+| `ENVIRONMENT` | `production` |
+| `DEBUG` | `false` |
+| `SERVE_FRONTEND` | `false` |
+| `SECRET_KEY` | Generate: `openssl rand -hex 32` |
+| `CORS_ORIGINS` | Your Vercel URL, e.g. `https://your-app.vercel.app` |
+| `AUTO_SEED_DEMO` | `true` (demo data) |
+| `BOOTSTRAP_ADMIN_EMAIL` | `admin@realindustries.in` |
+| `BOOTSTRAP_ADMIN_PASSWORD` | Strong password |
+
+### 4. Verify & connect Vercel
+
+- Health: `https://Anshul2004-hsrp-api.hf.space/health`
+- Vercel env: `VITE_API_URL=https://Anshul2004-hsrp-api.hf.space/api/v1` then redeploy
+
+**Note:** SQLite on HF is ephemeral (resets on redeploy). For persistent production data, use PostgreSQL (`DATABASE_URL`) on Neon/Supabase.

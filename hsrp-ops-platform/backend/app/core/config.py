@@ -17,26 +17,28 @@ class Settings(BaseSettings):
     APP_NAME: str = "HSRP Operations & Analytics API"
     APP_VERSION: str = "1.0.0"
     API_V1_PREFIX: str = "/api/v1"
-    ENVIRONMENT: str = "development"  # development | staging | production
+    ENVIRONMENT: str = "development"
     DEBUG: bool = True
     DATABASE_URL: str = "sqlite:///./hsrp_ops.db"
     SERVE_FRONTEND: bool = True
     FRONTEND_DIST: str = str(_DEFAULT_FRONTEND_DIST)
 
     # Production behaviour
-    AUTO_SEED_DEMO: bool = False
+    AUTO_SEED_DEMO: bool = True
     BOOTSTRAP_ADMIN_EMAIL: str = "admin@realindustries.in"
-    BOOTSTRAP_ADMIN_PASSWORD: str = "ChangeMe@2026!"
+    BOOTSTRAP_ADMIN_PASSWORD: str = "Admin@123"
     SCHEDULER_ENABLED: bool = True
     ALERT_JOB_INTERVAL_MINUTES: int = 15
-    PORTAL_AUTO_SYNC: bool = False  # set true when DISHA/Hero Biz APIs are configured
+    PORTAL_AUTO_SYNC: bool = False
     PORTAL_SYNC_INTERVAL_MINUTES: int = 60
 
     # Security
-    SECRET_KEY: str = "change-me-in-production-use-openssl-rand-hex-32"
+    SECRET_KEY: str = "dev-secret-key-change-in-production"
     JWT_ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 480
-    CORS_ORIGINS: str = "http://localhost:8080,http://localhost:5173,http://127.0.0.1:8080"
+    CORS_ORIGINS: str = (
+        "http://localhost:8080,http://localhost:5173,http://127.0.0.1:8080,http://localhost:8000"
+    )
 
     # Business rules
     PROFIT_MARGIN_PCT: float = 0.22
