@@ -94,7 +94,7 @@ export default function Dashboard() {
         title="Operations Dashboard"
         description={
           vehicleFilter === "all"
-            ? "Real-time PAN India HSRP lifecycle monitoring — Real Industries Limited"
+            ? "Real-time PAN India HSRP lifecycle monitoring — National HSRP Enterprise"
             : `Showing ${vehicleFilter === "new" ? "new vehicle" : "old vehicle"} orders only`
         }
       />

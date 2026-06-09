@@ -15,9 +15,9 @@ def platform_info():
     """Public branding for login page (no auth required)."""
     return {
         "app": {
-            "name": "Real Mazon",
+            "name": "HSRP Ops",
             "tagline": "HSRP Ops",
-            "company": "Real Industries Limited",
+            "company": "National HSRP Enterprise",
         }
     }
 

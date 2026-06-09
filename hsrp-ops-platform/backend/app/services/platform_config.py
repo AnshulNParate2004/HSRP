@@ -21,9 +21,9 @@ STAGE_LABELS = {
 def get_ui_config(db: Session) -> dict:
     return {
         "app": {
-            "name": "Real Mazon",
+            "name": "HSRP Ops",
             "tagline": "HSRP Ops",
-            "company": "Real Industries Limited",
+            "company": "National HSRP Enterprise",
             "description": "AI-Powered HSRP Operations & Analytics",
         },
         "vehicle_filters": [

@@ -25,7 +25,7 @@ class Settings(BaseSettings):
 
     # Production behaviour
     AUTO_SEED_DEMO: bool = True
-    BOOTSTRAP_ADMIN_EMAIL: str = "admin@realindustries.in"
+    BOOTSTRAP_ADMIN_EMAIL: str = "admin@hsrp-ops.local"
     BOOTSTRAP_ADMIN_PASSWORD: str = "Admin@123"
     SCHEDULER_ENABLED: bool = True
     ALERT_JOB_INTERVAL_MINUTES: int = 15

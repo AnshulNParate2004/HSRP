@@ -4,6 +4,7 @@ import { Shield } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useQuery } from "@tanstack/react-query";
 import { authApi } from "@/lib/api";
+import { APP_NAME, DEMO_ADMIN_EMAIL } from "@/lib/branding";
 
 export default function LoginPage() {
   const { login, user } = useAuth();
@@ -36,7 +37,7 @@ export default function LoginPage() {
       } else if (msg.includes("Failed to fetch") || msg.includes("NetworkError")) {
         setError("Cannot reach server. Start backend: npm run dev");
       } else {
-        setError("Sign-in failed. Use admin@realindustries.in / Admin@123");
+        setError(`Sign-in failed. Use ${DEMO_ADMIN_EMAIL} / Admin@123`);
       }
     } finally {
       setLoading(false);
@@ -51,7 +52,7 @@ export default function LoginPage() {
             <Shield className="h-5 w-5 text-white" />
           </div>
           <div>
-            <h1 className="text-lg font-bold">{platform?.app?.name ?? "Real Mazon"}</h1>
+            <h1 className="text-lg font-bold">{platform?.app?.name ?? APP_NAME}</h1>
             <p className="text-xs text-muted-foreground">Secure sign-in</p>
           </div>
         </div>
@@ -92,7 +93,7 @@ export default function LoginPage() {
 
         <p className="mt-3 text-center text-[11px] text-muted-foreground bg-muted/50 rounded-lg p-2">
           Default login (copy both):<br />
-          <span className="font-mono">admin@realindustries.in</span>
+          <span className="font-mono">{DEMO_ADMIN_EMAIL}</span>
           <br />
           <span className="font-mono">Admin@123</span>
           <span className="block mt-1 text-[10px]">Password must be 8+ characters</span>

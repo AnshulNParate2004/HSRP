@@ -10,7 +10,7 @@ pinned: false
 
 # HSRP Operations & Analytics API
 
-FastAPI backend for the Real Mazon HSRP platform. Pairs with the Vite frontend on Vercel.
+FastAPI backend for the HSRP Ops platform. Pairs with the Vite frontend on Vercel.
 
 ## Endpoints
 

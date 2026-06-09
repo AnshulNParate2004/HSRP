@@ -77,7 +77,7 @@ def get_management_summary(db: Session) -> dict:
 
     return {
         "executive_summary": (
-            f"Real Industries HSRP Operations — {summary['total_orders']} orders, "
+            f"National HSRP Enterprise — HSRP Operations — {summary['total_orders']} orders, "
             f"₹{summary['total_revenue']:,.0f} revenue. "
             f"{pendency['total_delayed']} orders breaching SLA. "
             f"{summary['critical_alerts']} management alerts active."

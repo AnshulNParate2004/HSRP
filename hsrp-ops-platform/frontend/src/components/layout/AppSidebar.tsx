@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { useSidebar } from "@/contexts/SidebarContext";
 import { useAppConfig } from "@/hooks/useAppConfig";
 import { getNavIcon } from "@/lib/navIcons";
+import { APP_NAME } from "@/lib/branding";
 
 export function AppSidebar() {
   const { collapsed, setCollapsed } = useSidebar();
@@ -32,7 +33,7 @@ export function AppSidebar() {
         {!collapsed && (
           <div className="flex flex-col leading-none">
             <span className="text-sm font-bold text-foreground tracking-tight">
-              {config?.app?.name ?? "Real Mazon"}
+              {config?.app?.name ?? APP_NAME}
             </span>
             <span className="text-[10px] font-semibold text-accent tracking-wider uppercase">
               {config?.app?.tagline ?? "HSRP Ops"}

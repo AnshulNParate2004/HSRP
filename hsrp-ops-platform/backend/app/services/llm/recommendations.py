@@ -14,7 +14,7 @@ def llm_recommendation(alert_type: str, context: dict, fallback: str) -> str:
     prompt = ChatPromptTemplate.from_messages([
         (
             "system",
-            "You are an HSRP operations expert for Real Industries India. "
+            "You are an HSRP operations expert for National HSRP Enterprise. "
             "Write ONE concise actionable recommendation (1-2 sentences) for management.",
         ),
         (

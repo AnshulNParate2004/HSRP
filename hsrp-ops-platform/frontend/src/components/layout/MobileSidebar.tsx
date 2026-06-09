@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { useAppConfig } from "@/hooks/useAppConfig";
 import { getNavIcon } from "@/lib/navIcons";
+import { APP_NAME } from "@/lib/branding";
 
 export function MobileSidebar() {
   const [open, setOpen] = useState(false);
@@ -43,7 +44,7 @@ export function MobileSidebar() {
                   <div className="flex h-8 w-8 items-center justify-center bg-[#1d4ed8] rounded-lg">
                     <Shield className="h-4 w-4 text-white" />
                   </div>
-                  <span className="text-sm font-bold">{config?.app?.name ?? "Real Mazon"}</span>
+                  <span className="text-sm font-bold">{config?.app?.name ?? APP_NAME}</span>
                 </div>
                 <button onClick={() => setOpen(false)}>
                   <X className="h-5 w-5" />

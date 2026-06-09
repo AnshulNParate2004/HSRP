@@ -1,4 +1,4 @@
-# Real Mazon HSRP Ops — Frontend (Vite + React)
+# HSRP Ops Platform — Frontend (Vite + React)
 
 Vite + React 18 + TypeScript + Tailwind CSS dashboard for HSRP operations analytics.
 

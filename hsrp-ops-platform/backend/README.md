@@ -1,4 +1,4 @@
-# Real Mazon HSRP Ops — Backend (FastAPI + SQLite)
+# HSRP Ops Platform — Backend (FastAPI + SQLite)
 
 Python API for HSRP operations analytics. Can also **serve the Vite frontend build** from port 8000.
 
@@ -79,6 +79,8 @@ SQLite file: `backend/hsrp_ops.db`
 
 Auto-seeds demo data on first startup if the database is empty.
 
+Default dev login: `admin@hsrp-ops.local` / `Admin@123`. If you previously seeded with another admin email, delete `hsrp_ops.db` and restart to pick up the new bootstrap credentials.
+
 ## Deploy to Hugging Face (Docker Space)
 
 Use this backend with the Vercel frontend (`VITE_API_URL` → your HF Space URL).
@@ -125,7 +127,7 @@ git push
 | `SECRET_KEY` | Generate: `openssl rand -hex 32` |
 | `CORS_ORIGINS` | Your Vercel URL, e.g. `https://your-app.vercel.app` |
 | `AUTO_SEED_DEMO` | `true` (demo data) |
-| `BOOTSTRAP_ADMIN_EMAIL` | `admin@realindustries.in` |
+| `BOOTSTRAP_ADMIN_EMAIL` | `admin@hsrp-ops.local` |
 | `BOOTSTRAP_ADMIN_PASSWORD` | Strong password |
 
 ### 4. Verify & connect Vercel

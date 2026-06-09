@@ -21,7 +21,7 @@ def build_operational_context(db: Session, vehicle_type: str | None = None) -> d
     """Aggregate all analytics into one JSON-safe context for the LLM."""
     summary = dashboard.get_dashboard_summary(db)
     return {
-        "company": "Real Industries Limited (Real Mazon — HSRP)",
+        "company": "National HSRP Enterprise (HSRP Ops)",
         "vehicle_filter": vehicle_type or "all",
         "dashboard": summary,
         "revenue": {

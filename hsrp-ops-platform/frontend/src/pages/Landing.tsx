@@ -3,6 +3,7 @@ import { Shield, ArrowRight, BarChart3, Clock, Package, Bell } from "lucide-reac
 import { motion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import { authApi } from "@/lib/api";
+import { APP_NAME, COMPANY_NAME } from "@/lib/branding";
 
 const FEATURE_ICONS: Record<string, typeof BarChart3> = {
   BarChart3,
@@ -35,7 +36,7 @@ export default function Landing() {
               <Shield className="h-5 w-5 text-white" />
             </div>
             <div>
-              <p className="text-sm font-bold">{platform?.app?.name ?? "Real Mazon"}</p>
+              <p className="text-sm font-bold">{platform?.app?.name ?? APP_NAME}</p>
               <p className="text-[10px] text-muted-foreground uppercase tracking-wider">
                 {platform?.app?.tagline ?? "HSRP Ops"}
               </p>
@@ -57,7 +58,7 @@ export default function Landing() {
           className="text-center max-w-3xl mx-auto mb-16"
         >
           <p className="text-sm font-semibold text-primary uppercase tracking-wider mb-3">
-            {platform?.app?.company ?? "Real Industries Limited"}
+            {platform?.app?.company ?? COMPANY_NAME}
           </p>
           <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">
             AI-Powered HSRP Operations & Analytics
