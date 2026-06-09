@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException, Request, status
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
 
 from app.core.deps import CurrentUser, require_roles
@@ -23,12 +23,13 @@ def platform_info():
 
 
 class LoginRequest(BaseModel):
-    email: EmailStr
+    # Plain str — EmailStr rejects reserved TLDs like .local used for demo login.
+    email: str = Field(min_length=5, pattern=r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
     password: str = Field(min_length=8)
 
 
 class CreateUserRequest(BaseModel):
-    email: EmailStr
+    email: str = Field(min_length=5, pattern=r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
     password: str = Field(min_length=8)
     full_name: str = Field(min_length=2, max_length=120)
     role: str = Field(pattern="^(admin|executive|operations_manager|state_manager|viewer)$")
